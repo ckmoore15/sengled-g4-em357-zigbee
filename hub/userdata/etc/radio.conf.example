@@ -1,0 +1,5 @@
+# /userdata/etc/radio.conf for the EM357 running EmberZNet 6.7.8 NCP (software flow control)
+MODE=ncp
+FIRMWARE=em357-ncp-6.7.8
+FIRMWARE_BAUD=57600
+FIRMWARE_FLOW_CTRL=sw

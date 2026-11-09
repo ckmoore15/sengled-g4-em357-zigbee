@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# S49em35x_pinmux — UART1 pin mux fix for the Sengled G4 8 MiB / EM35x revision
+#
+# This unit boots from Sengled's stock Realtek bootloader, which leaves
+# PIN_MUX_SEL (0xB8000040) bit 2 set. With bit 2 set the EM35x TX line never
+# reaches the RTL8196E UART1 RX pin (bridge rx stays 0). Sengled's own kernel
+# programs bits[2:0] = 010; the rtl8196e-uart driver only sets bits 1/3/6, so
+# clear bit 2 here, before S50uart_bridge arms the bridge.
+#
+case "$1" in
+start)
+    v=$(devmem 0x18000040 32)
+    # values are small: busybox 32-bit shell math is safe here
+    new=$(( v & ~4 ))
+    devmem 0x18000040 32 "$(printf '0x%08X' "$new")"
+    echo "  em35x-pinmux: PIN_MUX_SEL $v -> $(devmem 0x18000040 32)"
+    ;;
+stop|restart)
+    ;;
+esac
+exit 0

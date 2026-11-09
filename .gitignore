@@ -1,0 +1,9 @@
+# Never commit flash images, firmware or logs: they contain vendor code or unit-specific data
+*.bin
+*.img
+*.ebl
+*.gbl
+*.log
+build-8m/
+venv/
+__pycache__/
